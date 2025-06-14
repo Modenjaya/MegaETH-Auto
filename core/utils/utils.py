@@ -5,35 +5,31 @@ from ..config import GTE_TOKENS, BASE_TOKEN, ERC20_ABI
 init(autoreset=True)
 
 def print_header():
-    banner = """
-    ██╗    ██╗ ██╗ ███╗   ██╗ ███████╗ ███╗   ██╗ ██╗ ██████╗  
-    ██║    ██║ ██║ ████╗  ██║ ██╔════╝ ████╗  ██║ ██║ ██╔══██╗ 
-    ██║ █╗ ██║ ██║ ██╔██╗ ██║ ███████╗ ██╔██╗ ██║ ██║ ██████╔╝ 
-    ██║███╗██║ ██║ ██║╚██╗██║ ╚════██║ ██║╚██╗██║ ██║ ██╔═══╝  
-    ╚███╔███╔╝ ██║ ██║ ╚████║ ███████║ ██║ ╚████║ ██║ ██║      
-     ╚══╝╚══╝  ╚═╝ ╚═╝  ╚═══╝ ╚══════╝ ╚═╝  ╚═══╝ ╚═╝ ╚═╝      
+    banner = f"""{Fore.CYAN}
+    ███╗   ███╗███████╗ ██████╗  █████╗ ████████╗██╗  ██╗
+    ████╗ ████║██╔════╝██╔════╝ ██╔══██╗╚══██╔══╝██║  ██║
+    ██╔████╔██║█████╗  ██║  ███╗███████║   ██║   ███████║
+    ██║╚██╔╝██║██╔══╝  ██║   ██║██╔══██║   ██║   ██╔══██║
+    ██║ ╚═╝ ██║███████╗╚██████╔╝██║  ██║   ██║   ██║  ██║
+    ╚═╝     ╚═╝╚══════╝ ╚═════╝ ╚═╝  ╚═╝   ╚═╝   ╚═╝  ╚═╝
+    {Fore.YELLOW}Multi-Wallet Version | {Fore.GREEN}Explorer: megaexplorer.xyz
     """
-    colors = [Fore.RED, Fore.YELLOW, Fore.GREEN, Fore.CYAN, Fore.BLUE, Fore.MAGENTA]
-    lines = banner.split('\n')
-    for i, line in enumerate(lines):
-        if line.strip():
-            print(colors[i % len(colors)] + line)
-    print(Fore.WHITE + "\n" + "=" * 50)
-    print(Fore.CYAN + "🚀  MegaETH-GTE AUTO SWAP - WINSNIP")
-    print(Fore.YELLOW + "🔥 Join Telegram: " + Fore.CYAN + "@winsnip")
-    print(Fore.WHITE + "=" * 50 + "\n")
+    print(banner)
+    print(Fore.WHITE + "="*60)
+    print(Fore.CYAN + "📌 Fitur Baru:")
+    print(Fore.YELLOW + "✅ Multi-Wallet Support")
+    print(Fore.YELLOW + "✅ Link Explorer Transaksi")
+    print(Fore.YELLOW + "✅ Laporan Statistik Detail")
+    print(Fore.WHITE + "="*60 + "\n")
 
-def get_private_key():
-    while True:
-        pk = input("🔑 Masukkan Private Key (tanpa '0x'): ").strip()
-        if len(pk) != 64:
-            print("❌ Private Key harus 64 karakter!")
-            continue
-        try:
-            int(pk, 16)
-            return pk
-        except ValueError:
-            print("❌ Format Private Key tidak valid!")
+def get_private_keys():
+    """Membaca multiple private keys dari file wallets.txt"""
+    try:
+        with open('wallets.txt', 'r') as f:
+            return [line.strip() for line in f if line.strip()]
+    except FileNotFoundError:
+        print(f"{Fore.RED}❌ File wallets.txt tidak ditemukan")
+        exit()
 
 def get_token_balance(web3, account, symbol):
     data = GTE_TOKENS[symbol]
@@ -45,8 +41,10 @@ def get_token_balance(web3, account, symbol):
     return balance / (10 ** data["decimals"])
 
 def show_balances(web3, account):
-    print(f"\n📊 SALDO WALLET: {account.address}")
-    for token in GTE_TOKENS:
-        amount = get_token_balance(web3, account, token)
-        print(f"{token.ljust(12)}: {amount:.6f}")
+    print(f"\n{Fore.CYAN}💰 SALDO WALLET {account.address}")
+    max_length = max(len(symbol) for symbol in GTE_TOKENS)
+    for symbol in GTE_TOKENS:
+        amount = get_token_balance(web3, account, symbol)
+        color = Fore.GREEN if amount > 0 else Fore.RED
+        print(f"{Fore.YELLOW}{symbol.ljust(max_length)}: {color}{amount:.6f}")
     print()
