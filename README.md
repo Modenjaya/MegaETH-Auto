@@ -20,25 +20,25 @@
 
 1. Clone repository dari GitHub:
 ```bash
-git clone https://github.com/Winsnip-Tools/MegaETH-GTE/
-cd MegaETH-GTE
+git clone https://github.com/Winsnip-Tools/MegaETH-Auto
+cd MegaETH-Auto
 ```
 
 2. Install Python 3.x dari [python.org](https://python.org)
 3. Install dependencies yang diperlukan:
 ```bash
-pip install -r installini.txt
+pip3 install -r installini.txt
 ```
 Or 
 ```bash
-pip install web3 colorama eth-account
+pip3 install web3 colorama eth-account
 ```
 
 ## Cara Penggunaan
 
 1. Jalankan program dengan perintah:
 ```bash
-python main.py
+python3 main.py
 ```
 
 2. Masukkan private key wallet (tanpa '0x')
