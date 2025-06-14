@@ -1,3 +1,6 @@
+from colorama import Fore, init
+init(autoreset=True)
+
 import time
 import random
 from web3 import Web3
@@ -12,7 +15,7 @@ def process_wallet(private_key, rounds, swap_percent):
     router = web3.eth.contract(address=ROUTER_ADDRESS, abi=ROUTER_ABI)
     success_count = 0
     
-    print(f"\n{Account.from_key(private_key).address}")
+    print(f"\n{Fore.CYAN}🤑 Memproses Wallet: {account.address}")
     show_balances(web3, account)
 
     swap_fraction = swap_percent / 100
@@ -26,7 +29,7 @@ def process_wallet(private_key, rounds, swap_percent):
             balance = get_token_balance(web3, account, BASE_TOKEN)
             if balance > 0:
                 amount = balance * swap_fraction
-                print(f"\n{Fore.WHITE}🔀 Convert {BASE_TOKEN} -> {token}")
+                print(f"\n{Fore.WHITE}🔀 Convert {BASE_TOKEN} -> {token} ({amount:.6f})")
                 tx_hash = swap(web3, account, router, BASE_TOKEN, token, amount)
                 if tx_hash:
                     success_count += 1
@@ -37,7 +40,7 @@ def process_wallet(private_key, rounds, swap_percent):
         for token in tokens:
             balance = get_token_balance(web3, account, token)
             if balance > 0:
-                print(f"\n{Fore.WHITE}🔀 Convert {token} -> {BASE_TOKEN}")
+                print(f"\n{Fore.WHITE}🔀 Convert {token} -> {BASE_TOKEN} ({balance:.6f})")
                 tx_hash = swap(web3, account, router, token, BASE_TOKEN, balance)
                 if tx_hash:
                     success_count += 1
