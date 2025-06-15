@@ -34,6 +34,12 @@ Or
 pip3 install web3 colorama eth-account
 ```
 
+4. Edit wallets.txt ( 1 line 1 accounts )
+```bash
+nano wallets.txt
+```
+
+
 ## Cara Penggunaan
 
 1. Jalankan program dengan perintah:
@@ -41,7 +47,6 @@ pip3 install web3 colorama eth-account
 python3 main.py
 ```
 
-2. Masukkan private key wallet (tanpa '0x')
 3. Tentukan jumlah putaran swap yang diinginkan
 4. Masukkan persentase saldo yang ingin digunakan untuk setiap swap
 
